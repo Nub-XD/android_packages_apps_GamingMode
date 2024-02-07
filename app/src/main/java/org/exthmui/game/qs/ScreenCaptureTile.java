@@ -16,18 +16,14 @@
 
 package org.exthmui.game.qs;
 
-import static android.view.WindowManager.ScreenshotSource.SCREENSHOT_GLOBAL_ACTIONS;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
+import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
-
-import com.android.internal.util.ScreenshotHelper;
+import android.view.WindowManagerGlobal;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -38,16 +34,12 @@ public class ScreenCaptureTile extends TileBase {
 
     private static final String TAG = "ScreenCaptureTile";
 
-    private static final Intent hideMenuIntent = new Intent(Constants.Broadcasts.BROADCAST_GAMING_MENU_CONTROL).putExtra("cmd", "hide");
-    
-    private Handler mHandler;
-    private ScreenshotHelper mScreenshotHelper;
+    private Intent hideMenuIntent = new Intent(Constants.Broadcasts.BROADCAST_GAMING_MENU_CONTROL).putExtra("cmd", "hide");
+    private Handler mHandler = new Handler();
 
     public ScreenCaptureTile(Context context) {
         super(context, context.getString(R.string.qs_screen_capture), "", R.drawable.ic_qs_screenshot);
         qsIcon.setSelected(true);
-        mHandler = new Handler(Looper.getMainLooper());
-        mScreenshotHelper = new ScreenshotHelper(context);
     }
 
     @Override
@@ -60,9 +52,8 @@ public class ScreenCaptureTile extends TileBase {
         LocalBroadcastManager.getInstance(mContext).sendBroadcastSync(hideMenuIntent);
         mHandler.postDelayed(() -> {
             try {
-                mScreenshotHelper.takeScreenshot(WindowManager.TAKE_SCREENSHOT_FULLSCREEN, true, true,
-                    SCREENSHOT_GLOBAL_ACTIONS, mHandler, null);
-            } catch (Exception e) {
+                WindowManagerGlobal.getWindowManagerService().takeAlternativeScreenshot();
+            } catch (RemoteException e) {
                 Log.e(TAG, "Error while trying to take screenshot.", e);
             }
         }, 500);

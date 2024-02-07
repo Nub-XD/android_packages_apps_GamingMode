@@ -3,13 +3,7 @@ android_app {
 
     resource_dirs: ["res"],
 
-    srcs: [
-        "java/**/*.java",
-        "java/**/I*.aidl",
-    ],
-    aidl: {
-        local_include_dirs: ["java"],
-    },
+    srcs: ["java/**/*.java"],
 
     static_libs: [
         "androidx.annotation_annotation",

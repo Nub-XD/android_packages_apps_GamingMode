@@ -31,7 +31,6 @@ import org.exthmui.game.qs.LockGestureTile;
 import org.exthmui.game.qs.LockHwKeysTile;
 import org.exthmui.game.qs.LockNavbarTile;
 import org.exthmui.game.qs.ScreenCaptureTile;
-import org.exthmui.game.qs.ScreenRecordTile;
 import org.exthmui.game.qs.TileBase;
 
 public class QuickSettingsView extends LinearLayout {
@@ -59,7 +58,6 @@ public class QuickSettingsView extends LinearLayout {
 
         qsTiles = new TileBase[]{
                 new ScreenCaptureTile(context),
-                new ScreenRecordTile(context),
                 new DanmakuTile(context),
                 new DNDTile(context),
                 new LockHwKeysTile(context),
